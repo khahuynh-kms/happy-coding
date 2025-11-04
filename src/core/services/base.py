@@ -60,7 +60,7 @@ class BaseService(Generic[T]):
         """Create a new document from dict or Pydantic model."""
         if hasattr(data, "model_dump"):  # ✅ Handle Pydantic models
             data = data.model_dump(
-                exclude_unset=True, exclude_none=True
+                exclude_unset=True, exclude_none=True,
             )
         elif hasattr(data, "dict"):      # ✅ Handle BaseModel (pydantic v1)
             data = data.dict()
@@ -74,7 +74,7 @@ class BaseService(Generic[T]):
         Recursively fetches all nested links in a Beanie document.
         """
         tasks = []
-        for field_name, field_value in document.model_dump().items():
+        for (field_name, field_value) in document.model_dump().items():
             # Use getattr to inspect the actual field types on the model
             field = getattr(document, field_name)
 

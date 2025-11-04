@@ -105,11 +105,10 @@ async def capture_order(
     payer_id: str = Query(..., alias="PayerID")
 ):
     order = await order_service.find_by_ref_order_id(ref_order_id)
-    order_id = order.id
-
     if not order:
         raise HTTPException(status_code=404, detail="Order not found")
 
+    order_id = order.id
     ref_order_id = order.ref_order_id
     if not ref_order_id:
         raise HTTPException(
@@ -120,9 +119,10 @@ async def capture_order(
     if order.ref_payment_source == "paypal":
         payment = await paypal_service.capture_order(ref_order_id)
         return await order_service.update(
-            order_id, {"status": (
-                "paid" if payment["status"] == "COMPLETED" else "pending"
-            ),
+            order_id, {
+                "status": (
+                    "paid" if payment["status"] == "COMPLETED" else "pending"
+                ),  
                 "payer_id": payer_id
             }
         )
@@ -135,7 +135,10 @@ async def capture_order(
 
 @router.get("/{order_id}", response_model=OrderResponse)
 async def get_order(order_id: str):
-    return await order_service.find_one(order_id)
+    order = await order_service.find_one(order_id)
+    if not order:
+        raise HTTPException(status_code=404, detail="Order not found")
+    return order
 
 
 @router.get("/{order_id}/provider")

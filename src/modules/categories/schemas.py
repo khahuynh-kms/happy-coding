@@ -2,7 +2,7 @@
 from datetime import datetime
 from beanie import PydanticObjectId
 from typing import Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class CategoryBase(BaseModel):
@@ -24,10 +24,12 @@ class CategoryUpdate(BaseModel):
 
 
 class CategoryResponse(CategoryBase):
-    id: PydanticObjectId = Field(alias="_id")
+    id: PydanticObjectId
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        from_attributes = True
-        populate_by_name = True
+    model_config = ConfigDict(
+        from_attributes=True,
+        populate_by_name=True,
+        arbitrary_types_allowed=True
+    )

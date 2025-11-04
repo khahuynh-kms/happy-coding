@@ -1,3 +1,4 @@
+from calendar import c
 from fastapi import APIRouter, HTTPException
 from beanie import Link, PydanticObjectId
 
@@ -12,8 +13,11 @@ router = APIRouter(prefix="/products", tags=["Products"])
 
 @router.post("/", response_model=ProductResponse)
 async def create_product(data: ProductCreate):
+    print("Creating product with data:", data)
     if data.category_id:
+        print("Category ID:", data.category_id)
         category = await category_service.find_one(data.category_id)
+        print("Category found:", category)
         if not category:
             raise HTTPException(status_code=404, detail="Category not found")
 
@@ -22,7 +26,7 @@ async def create_product(data: ProductCreate):
 
 
 @router.get("/", response_model=list[ProductResponse])
-async def list_products():
+async def get_products():
     return await product_service.find_all()
 
 
@@ -36,14 +40,16 @@ async def get_product(product_id: PydanticObjectId):
 
 @router.put("/{product_id}", response_model=ProductResponse)
 async def update_product(product_id: PydanticObjectId, data: ProductUpdate):
+    category = None
     if data.category_id:
         category = await category_service.find_one(data.category_id)
         if not category:
             raise HTTPException(status_code=404, detail="Category not found")
 
     data = data.model_dump(exclude={"category_id"}, exclude_unset=True)
+    payload = {**data, "category": Link(category)} if category else {**data}
     product = await product_service.update(
-        product_id, {**data, "category": Link(category)})
+        product_id, payload)
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
     return product

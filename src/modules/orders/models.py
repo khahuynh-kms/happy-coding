@@ -1,7 +1,7 @@
 
 from typing import List, Optional
 from beanie import Link
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from ..users.models import User
 from ..products.models import Product
@@ -30,6 +30,8 @@ class Order(TimestampDocument):
     class Settings:
         name = "orders"
 
-    class Config:
-        from_attributes = True
-        populate_by_name = True
+    model_config = ConfigDict(
+        arbitrary_types_allowed=True,
+        from_attributes=True,
+        populate_by_name=True,
+    )

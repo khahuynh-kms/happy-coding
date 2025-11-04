@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 from beanie import Document, before_event, Insert, Replace, SaveChanges
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class BaseDocument(Document):
@@ -8,9 +8,10 @@ class BaseDocument(Document):
         is_root = False
         name = None
 
-    class Config:
-        arbitrary_types_allowed = True
-        from_attributes = True
+    model_config = ConfigDict(
+        arbitrary_types_allowed=True,
+        from_attributes=True,
+    )
 
 
 class TimestampMixin(BaseModel):
@@ -19,9 +20,10 @@ class TimestampMixin(BaseModel):
     updated_at: datetime = Field(
         default_factory=lambda: datetime.now(timezone.utc))
 
-    class Config:
-        arbitrary_types_allowed = True
-        from_attributes = True
+    model_config = ConfigDict(
+        arbitrary_types_allowed=True,
+        from_attributes=True,
+    )
 
 
 class TimestampDocument(BaseDocument, TimestampMixin):

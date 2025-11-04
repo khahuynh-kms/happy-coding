@@ -1,6 +1,7 @@
 
 from typing import Optional
 from beanie import Link
+from pydantic import ConfigDict
 
 from ...core.models.base import TimestampDocument
 from ..categories.models import Category
@@ -18,6 +19,8 @@ class Product(TimestampDocument):
         name = "products"
         populate_links = True
 
-    class Config:
-        from_attributes = True
-        populate_by_name = True
+    model_config = ConfigDict(
+        arbitrary_types_allowed=True,
+        from_attributes=True,
+        populate_by_name=True,
+    )

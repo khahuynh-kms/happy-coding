@@ -1,6 +1,6 @@
 from typing import List, Optional
 from beanie import PydanticObjectId
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from ..products.schemas import ProductResponse
 
@@ -25,7 +25,7 @@ class OrderItemResponse(BaseModel):
 
 
 class OrderResponse(BaseModel):
-    id: PydanticObjectId = Field(alias="_id")
+    id: PydanticObjectId
     user: UserResponse
     items: List[OrderItemResponse] = None
     total_price: float
@@ -34,7 +34,9 @@ class OrderResponse(BaseModel):
     ref_payment_source: Optional[str] = None
     checkout_url: Optional[str] = None
     payer_id: Optional[str] = None
-
-    class Config:
-        from_attributes = True
-        populate_by_name = True
+    
+    model_config = ConfigDict(
+        arbitrary_types_allowed=True,
+        populate_by_name=True,
+        from_attributes=True
+    )

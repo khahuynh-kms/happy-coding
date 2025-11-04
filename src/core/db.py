@@ -9,7 +9,7 @@ mongo_config = app_settings.database.mongodb
 client = AsyncMongoClient(
     mongo_config.uri
 )
-db = client["happy_coding"]
+db = client[mongo_config.db_name]
 
 
 async def get_db():

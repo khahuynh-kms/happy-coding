@@ -2,7 +2,6 @@
 from dotenv import load_dotenv
 from fastapi import FastAPI
 
-from .core.config.config import app_settings
 from src.core.libs.mailing.template_factory import TemplateFactory
 
 from .modules import load_routers

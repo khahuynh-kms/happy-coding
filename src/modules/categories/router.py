@@ -1,3 +1,5 @@
+
+from typing import List
 from fastapi import APIRouter, HTTPException, status
 from beanie import PydanticObjectId
 from .schemas import CategoryCreate, CategoryUpdate, CategoryResponse
@@ -11,8 +13,8 @@ async def create_category(data: CategoryCreate):
     return await category_service.create(data)
 
 
-@router.get("/", response_model=list[CategoryResponse])
-async def list_categories():
+@router.get("/", response_model=List[CategoryResponse])
+async def get_categories():
     return await category_service.find_all()
 
 

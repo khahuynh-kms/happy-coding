@@ -18,6 +18,15 @@ class MongoDBSettings(BaseSettings):
         validation_alias="MONGO_URI"
     )
 
+    test_uri: str = Field(
+        "mongodb://localhost:27017/test",
+        validation_alias="MONGO_TEST_URI"
+    )
+    test_db_name: str = Field(
+        "happy_coding_test",
+        validation_alias="MONGO_TEST_DB_NAME"
+    )
+
     model_config = SettingsConfigDict(
         env_file=".env",
         case_sensitive=False,

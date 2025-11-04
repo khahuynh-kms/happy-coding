@@ -1,6 +1,6 @@
 from typing import Optional
 from beanie import PydanticObjectId
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, ConfigDict, EmailStr
 
 
 class UserCreate(BaseModel):
@@ -28,5 +28,8 @@ class UserResponse(BaseModel):
     is_active: bool
     role: Optional[str]
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(
+        arbitrary_types_allowed=True,
+        populate_by_name=True,
+        from_attributes=True
+    )

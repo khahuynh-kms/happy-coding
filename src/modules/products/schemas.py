@@ -1,22 +1,33 @@
 
 from datetime import datetime
 from typing import Optional
-from pydantic import BaseModel, Field
-from beanie import Link, PydanticObjectId
+from pydantic import BaseModel, ConfigDict, Field
+from beanie import PydanticObjectId
 
 from ..categories.schemas import CategoryResponse
 
-from ..categories.models import Category
-
 
 class ProductBase(BaseModel):
-    name: str = Field(..., example="iPhone 16")
-    description: Optional[str] = Field(None, example="Latest Apple smartphone")
-    price: float = Field(..., example=1299.99)
-    stock: int = Field(0, example=50)
-    category_id: Optional[PydanticObjectId] = Field(
-        None, example="652f95f7f4209b8f22dca333")
+    name: str
+    description: Optional[str] = None
+    price: float
+    stock: int
+    category_id: Optional[PydanticObjectId]
     is_active: bool = True
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "name": "iPhone 16",
+                    "description": "Latest Apple smartphone",
+                    "price": 1299.99,
+                    "stock": 50,
+                    "category_id": "507f1f77bcf86cd799439011",
+                }
+            ]
+        }
+    )
 
 
 class ProductCreate(ProductBase):
@@ -39,6 +50,8 @@ class ProductResponse(ProductBase):
 
     category: Optional[CategoryResponse] = None
 
-    class Config:
-        from_attributes = True
-        populate_by_name = True
+    model_config = ConfigDict(
+        from_attributes=True,
+        arbitrary_types_allowed=True,
+        populate_by_name=True,
+    )
