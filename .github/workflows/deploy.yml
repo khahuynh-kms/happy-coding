@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    environment: happy_coding
+    env: ${{ secrets }}  
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Determine Python version
+        id: python
+        run: |
+          if [ -f .python-version ]; then
+            echo "version=$(cat .python-version)" >> $GITHUB_OUTPUT
+          else
+            echo "version=3.9" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ steps.python.outputs.version }}
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v2
+
+      - name: Install dependencies
+        run: uv sync --locked
+
+      - name: Create .env file from secrets
+        run: |
+          echo "# Auto-generated .env" > .env
+          for name in $(echo "${!}" | tr ' ' '\n' | grep '^PAYPAL\|^API\|^DB\|^SECRET\|^KEY'); do
+            echo "$name=${!name}" >> .env
+          done
+        env: ${{ secrets }}
+        shell: bash
+
+      - name: Mask .env values in logs
+        run: cat .env | sed 's/=.*/=*****/'
+
+      - name: Run tests
+        env: ${{ secrets }}
+        run: uv run pytest -v

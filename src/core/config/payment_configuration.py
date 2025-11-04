@@ -17,7 +17,6 @@ class PayPalSettings(BaseSettings):
     personal_sandbox_email: str = Field(
         ..., validation_alias="PAYPAL_PERSONAL_SANDBOX_EMAIL"
     )
-
     model_config = SettingsConfigDict(
         env_file=".env",
         case_sensitive=False,
