@@ -216,7 +216,6 @@ async def test_update_product(
             f"/products/{mocked_data.id}", json=update_data)
 
         data = response.json()
-        print(data)
         assert response.status_code == 200
         assert data["name"] == update_data["name"]
         assert data["description"] == update_data["description"]

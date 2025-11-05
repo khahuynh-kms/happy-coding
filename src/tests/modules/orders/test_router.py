@@ -107,7 +107,6 @@ async def test_create_order(
             "/orders/", json=order_payload)
 
         data = response.json()
-        print("data:", data)
         assert data["user"]["id"] == str(user_id)
         assert data["total_price"] == mocked_data.total_price
         assert len(data["items"]) == len(mocked_data.items)
@@ -280,7 +279,6 @@ async def test_get_order(
         response = await test_client.get(f"/orders/{mocked_data.id}")
 
         data = response.json()
-        print("data:", data)
         assert data["user"]["id"] == str(user_id)
         assert data["total_price"] == mocked_data.total_price
         assert len(data["items"]) == len(mocked_data.items)

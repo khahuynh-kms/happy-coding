@@ -67,7 +67,6 @@ async def test_get_categories(
         response = await test_client.get("/categories/")
 
         data = response.json()
-        print(data)
         assert len(data) == 1
         assert data[0]["id"] == str(mocked_data[0].id)
         assert data[0]["name"] == mocked_data[0].name

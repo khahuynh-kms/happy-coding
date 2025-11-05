@@ -79,7 +79,6 @@ async def create_payment(data):
 
 async def confirm_payment_source(order_id, data):
     token = await register_paypal_token()
-    print(token)
     async with httpx.AsyncClient() as client:
         response = await client.post(
             f"{API_URI}{routes['orders.confirm_payment_source'](order_id)}",

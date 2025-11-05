@@ -22,3 +22,4 @@ class PayPalRequestBuilder:
     def build(raw_data: Dict[str, Any], destination_class: Type[T]) -> T:
         """Convert raw order data into the target destination type."""
         return destination_class.from_raw(raw_data)
+

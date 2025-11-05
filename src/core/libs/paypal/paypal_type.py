@@ -82,7 +82,6 @@ class PayPalOrderRequest(BaseModel, PayPalRequestInterface):
         Converts an application's internal order dictionary
         into a PayPalOrderRequest object.
         """
-        print("Start convert: ", raw_data)
 
         # paypal_config = app_settings.payment.paypal
         order_id = str(raw_data["id"])
