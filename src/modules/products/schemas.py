@@ -12,7 +12,6 @@ class ProductBase(BaseModel):
     description: Optional[str] = None
     price: float
     stock: int
-    category_id: Optional[PydanticObjectId]
     is_active: bool = True
 
     model_config = ConfigDict(
@@ -23,7 +22,6 @@ class ProductBase(BaseModel):
                     "description": "Latest Apple smartphone",
                     "price": 1299.99,
                     "stock": 50,
-                    "category_id": "507f1f77bcf86cd799439011",
                 }
             ]
         }
@@ -31,7 +29,20 @@ class ProductBase(BaseModel):
 
 
 class ProductCreate(ProductBase):
-    pass
+    category_id: Optional[PydanticObjectId]
+    model_config = ConfigDict(
+        json_schema_extra={
+            "examples": [
+                {
+                    "name": "iPhone 16",
+                    "description": "Latest Apple smartphone",
+                    "price": 1299.99,
+                    "stock": 50,
+                    "category_id": "64b8f0f2e1b1c8a1d2e3f4g5",
+                }
+            ]
+        }
+    )
 
 
 class ProductUpdate(BaseModel):
@@ -47,7 +58,6 @@ class ProductResponse(ProductBase):
     id: PydanticObjectId = Field(alias="_id")
     created_at: datetime
     updated_at: datetime
-
     category: Optional[CategoryResponse] = None
 
     model_config = ConfigDict(

@@ -203,7 +203,7 @@ async def test_delete_category(
         response = await test_client.delete(
             f"/categories/{mocked_data.id}")
 
-        assert response.status_code == 204
+        assert response.status_code == 200
 
 
 @pytest.mark.asyncio

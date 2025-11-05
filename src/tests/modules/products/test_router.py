@@ -23,7 +23,6 @@ def mock_product_data():
         price=49.99,
         stock=100,
         is_active=True,
-        category_id=category_id,
         category=CategoryResponse(
             id=category_id,
             name="Sample Category",
@@ -60,7 +59,7 @@ async def test_create_product(
             "price": 49.99,
             "stock": 100,
             "is_active": True,
-            "category_id": str(mocked_data.category_id)
+            "category_id": str(category_id)
         }
 
         response = await test_client.post("/products/", json=product_data)
@@ -72,7 +71,6 @@ async def test_create_product(
         assert data["price"] == mocked_data.price
         assert data["stock"] == mocked_data.stock
         assert data["is_active"] == mocked_data.is_active
-        assert data["category_id"] == str(mocked_data.category_id)
 
 
 @pytest.mark.asyncio
@@ -93,7 +91,7 @@ async def test_create_product_category_not_found(
             "price": 49.99,
             "stock": 100,
             "is_active": True,
-            "category_id": str(mock_product_data.category_id)
+            "category_id": str(category_id)
         }
 
         response = await test_client.post("/products/", json=product_data)
@@ -126,7 +124,6 @@ async def test_get_products(
         assert data[0]["price"] == mocked_data[0].price
         assert data[0]["stock"] == mocked_data[0].stock
         assert data[0]["is_active"] == mocked_data[0].is_active
-        assert data[0]["category_id"] == str(mocked_data[0].category_id)
 
 
 @pytest.mark.asyncio
@@ -169,7 +166,6 @@ async def test_get_product(
         assert data["price"] == mocked_data.price
         assert data["stock"] == mocked_data.stock
         assert data["is_active"] == mocked_data.is_active
-        assert data["category_id"] == str(mocked_data.category_id)
 
 
 @pytest.mark.asyncio

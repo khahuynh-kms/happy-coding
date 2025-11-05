@@ -1,4 +1,3 @@
-
 from typing import List
 from fastapi import APIRouter, HTTPException, status
 from beanie import PydanticObjectId
@@ -34,7 +33,7 @@ async def update_category(category_id: PydanticObjectId, data: CategoryUpdate):
     return category
 
 
-@router.delete("/{category_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{category_id}")
 async def delete_category(category_id: PydanticObjectId):
     success = await category_service.delete(category_id)
     if not success:

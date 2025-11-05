@@ -1,4 +1,3 @@
-from calendar import c
 from fastapi import APIRouter, HTTPException
 from beanie import Link, PydanticObjectId
 
@@ -13,11 +12,8 @@ router = APIRouter(prefix="/products", tags=["Products"])
 
 @router.post("/", response_model=ProductResponse)
 async def create_product(data: ProductCreate):
-    print("Creating product with data:", data)
     if data.category_id:
-        print("Category ID:", data.category_id)
         category = await category_service.find_one(data.category_id)
-        print("Category found:", category)
         if not category:
             raise HTTPException(status_code=404, detail="Category not found")
 
