@@ -48,7 +48,7 @@ async def update_user(user_id: PydanticObjectId, update_data: UserUpdate):
     return user
 
 
-@router.delete("/{user_id}", response_model=UserResponse)
+@router.delete("/{user_id}")
 async def delete_user(user_id: PydanticObjectId):
     deleted = await user_service.delete(user_id)
     if not deleted:
