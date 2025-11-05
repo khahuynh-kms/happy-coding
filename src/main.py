@@ -19,8 +19,11 @@ async def startup_db():
 
 routers = load_routers()
 for router in routers:
-
     app.include_router(router)
 
+
+@app.get("/health")
+async def health_check():
+    return {"status": "healthy"}
 
 load_dotenv()
